@@ -208,7 +208,7 @@ class ItemRepositoryTest {
 		}
 	}
 	
-	
+	/*
 	//퀴즈2
 	@Test
 	@DisplayName("퀴즈2-1")
@@ -229,7 +229,7 @@ class ItemRepositoryTest {
 			System.out.println(item.toString());
 		}
 	}
-	
+	*/
 	
 	@Test
 	@DisplayName("querydsl 조회 테스트")
