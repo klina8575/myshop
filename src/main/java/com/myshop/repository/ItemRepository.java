@@ -3,12 +3,15 @@ package com.myshop.repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.myshop.constant.ItemSellStatus;
 import com.myshop.entity.Item;
+import com.querydsl.core.BooleanBuilder;
 
 //JpaRepository : 기본적인 CRUD 및 페이징 처리를 위한 메소드가 정의가 되어있다.
 //JpaRepository<사용할 엔티티 클래스, 기본키 타입>
@@ -42,5 +45,14 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 	
 	@Query(value = "select * from item i where i.item_detail like %:itemDetail% order by i.price desc", nativeQuery = true)
 	List<Item> findByItemDetailByNative(@Param("itemDetail") String itemDetail);
+	
+	/*
+	//퀴즈
+	@Query("select i from Item i where i.price >= :price")
+	List<Item> getPrice(@Param("price") Integer price);
+	
+	@Query("select i from Item i where i.itemNm = :itemNm and i.itemSellStatus = :sell")
+	List<Item> getItemNmAndItemSellStatus(@Param("itemNm") String itemNm, @Param("sell") ItemSellStatus sell);
+	*/
 	
 }

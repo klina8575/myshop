@@ -5,14 +5,25 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.TestPropertySource;
 
 import com.myshop.constant.ItemSellStatus;
 import com.myshop.entity.Item;
+import com.myshop.entity.QItem;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.thymeleaf.util.StringUtils;
 
 @SpringBootTest
 @TestPropertySource(locations="classpath:application-test.properties")
@@ -20,6 +31,10 @@ class ItemRepositoryTest {
 	
 	@Autowired
 	ItemRepository itemRepository;
+	
+	@PersistenceContext //영속성 컨텍스트를 사용하기 위해 선언
+	EntityManager em; //엔티티 매니저
+	
 	
 	/*
 	public void createItemTest() {
@@ -45,6 +60,32 @@ class ItemRepositoryTest {
 			item.setItemDetail("테스트 상품 상세 설명" + i);
 			item.setItemSellStatus(ItemSellStatus.SELL);
 			item.setStockNumber(100);
+			item.setRegTime(LocalDateTime.now());
+			item.setUpdateTime(LocalDateTime.now());	
+			Item savedItem = itemRepository.save(item); //데이터 insert
+		}
+	}
+	
+	public void createItemTest2() {
+		for (int i=1; i<=5; i++) {			
+			Item item = new Item();
+			item.setItemNm("테스트 상품" + i);
+			item.setPrice(10000 + i);
+			item.setItemDetail("테스트 상품 상세 설명" + i);
+			item.setItemSellStatus(ItemSellStatus.SELL);
+			item.setStockNumber(100);
+			item.setRegTime(LocalDateTime.now());
+			item.setUpdateTime(LocalDateTime.now());	
+			Item savedItem = itemRepository.save(item); //데이터 insert
+		}
+		
+		for (int i=6; i<=10; i++) {			
+			Item item = new Item();
+			item.setItemNm("테스트 상품" + i);
+			item.setPrice(10000 + i);
+			item.setItemDetail("테스트 상품 상세 설명" + i);
+			item.setItemSellStatus(ItemSellStatus.SOLD_OUT);
+			item.setStockNumber(0);
 			item.setRegTime(LocalDateTime.now());
 			item.setUpdateTime(LocalDateTime.now());	
 			Item savedItem = itemRepository.save(item); //데이터 insert
@@ -162,6 +203,73 @@ class ItemRepositoryTest {
 	public void findByItemDetailByNativeTest() {
 		this.createItemTest();
 		List<Item> itemList = itemRepository.findByItemDetailByNative("테스트 상품 상세 설명");
+		for (Item item : itemList) {
+			System.out.println(item.toString());
+		}
+	}
+	
+	/*
+	//퀴즈2
+	@Test
+	@DisplayName("퀴즈2-1")
+	public void getPriceTest() {
+		this.createItemTest();
+		List<Item> itemList = itemRepository.getPrice(10005);
+		for (Item item : itemList) {
+			System.out.println(item.toString());
+		}
+	}
+	
+	@Test
+	@DisplayName("퀴즈2-2")
+	public void getItemNmAndItemSellStatusTest() {
+		this.createItemTest();
+		List<Item> itemList = itemRepository.getItemNmAndItemSellStatus("테스트 상품1", ItemSellStatus.SELL);
+		for (Item item : itemList) {
+			System.out.println(item.toString());
+		}
+	}
+	*/
+	
+	@Test
+	@DisplayName("querydsl 조회 테스트")
+	public void queryDslTest() {
+		this.createItemTest();
+		JPAQueryFactory qf = new JPAQueryFactory(em); //쿼리를 동적으로 생성하기 위한 객체
+		QItem qItem = QItem.item;
+		
+		//select * from item where itemSellStatus = 'SELL' and itemDetail like %테스트 상품 상세 설명% order by price desc
+		JPAQuery<Item> query = qf.selectFrom(qItem)
+				                 .where(qItem.itemSellStatus.eq(ItemSellStatus.SELL))
+				                 .where(qItem.itemDetail.like("%테스트 상품 상세 설명%"))
+				                 .orderBy(qItem.price.desc());
+		
+		List<Item> itemList = query.fetch();
+		
+		for (Item item : itemList) {
+			System.out.println(item.toString());
+		}
+	}
+	
+	
+	@Test
+	@DisplayName("querydsl 조회 테스트2")
+	public void queryDslTest2() {
+		this.createItemTest2();
+	
+		JPAQueryFactory qf = new JPAQueryFactory(em); //쿼리를 동적으로 생성하기 위한 객체
+		QItem qItem = QItem.item;
+		Pageable page = PageRequest.of(0, 2); //of(조회할 페이지의 번호, 한페이지당 조회할 데이터의 갯수)
+		
+		JPAQuery<Item> query = qf.selectFrom(qItem)
+				                 .where(qItem.itemSellStatus.eq(ItemSellStatus.SELL))
+				                 .where(qItem.itemDetail.like("%테스트 상품 상세 설명%"))
+				                 .where(qItem.price.gt(10003))
+				                 .offset(page.getOffset())
+				                 .limit(page.getPageSize());
+		
+		List<Item> itemList = query.fetch();
+		
 		for (Item item : itemList) {
 			System.out.println(item.toString());
 		}
