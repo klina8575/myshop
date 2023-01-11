@@ -90,4 +90,80 @@ class ItemRepositoryTest {
 			System.out.println(item.toString());
 		}
 	}
+	
+	/*
+	//퀴즈1
+	@Test
+	@DisplayName("퀴즈1-1")
+	public void findByItemNmAndItemSellStatusTest() {
+		this.createItemTest();
+		List<Item> itemList = itemRepository.findByItemNmAndItemSellStatus("테스트 상품1", ItemSellStatus.SELL);
+		for (Item item : itemList) {
+			System.out.println(item.toString());
+		}
+	}
+	
+	@Test
+	@DisplayName("퀴즈1-2")
+	public void findByPriceBetweenTest() {
+		this.createItemTest();
+		List<Item> itemList = itemRepository.findByPriceBetween(10004, 10008);
+		for (Item item : itemList) {
+			System.out.println(item.toString());
+		}
+	}
+	
+	@Test
+	@DisplayName("퀴즈1-3")
+	public void findByRegTimeAfterTest() {
+		this.createItemTest();
+		LocalDateTime regTime = LocalDateTime.of(2023, 1, 1, 12, 12, 44);
+		List<Item> itemList = itemRepository.findByRegTimeAfter(regTime);
+		for (Item item : itemList) {
+			System.out.println(item.toString());
+		}
+	}
+	
+	@Test
+	@DisplayName("퀴즈1-4")
+	public void findByItemSellStatusNotNullTest() {
+		this.createItemTest();
+		List<Item> itemList = itemRepository.findByItemSellStatusNull();
+		for (Item item : itemList) {
+			System.out.println(item.toString());
+		}
+	}
+	
+	@Test
+	@DisplayName("퀴즈1-5")
+	public void findByItemDetailLikeTest() {
+		this.createItemTest();
+		List<Item> itemList = itemRepository.findByItemDetailLike("%설명1");
+		//List<Item> itemList = itemRepository.findByItemDetailLike("설명1%");
+		//List<Item> itemList = itemRepository.findByItemDetailLike("%설명1%");
+		for (Item item : itemList) {
+			System.out.println(item.toString());
+		}
+	}
+	*/
+	
+	@Test
+	@DisplayName("@Query를 이용한 상품 조회 테스트")
+	public void findByItemDetailTest() {
+		this.createItemTest();
+		List<Item> itemList = itemRepository.findByItemDetail("테스트 상품 상세 설명");
+		for (Item item : itemList) {
+			System.out.println(item.toString());
+		}
+	}
+	
+	@Test
+	@DisplayName("@native Query를 이용한 상품 조회 테스트")
+	public void findByItemDetailByNativeTest() {
+		this.createItemTest();
+		List<Item> itemList = itemRepository.findByItemDetailByNative("테스트 상품 상세 설명");
+		for (Item item : itemList) {
+			System.out.println(item.toString());
+		}
+	}
 }

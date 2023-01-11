@@ -1,8 +1,13 @@
 package com.myshop.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import com.myshop.constant.ItemSellStatus;
 import com.myshop.entity.Item;
 
 //JpaRepository : 기본적인 CRUD 및 페이징 처리를 위한 메소드가 정의가 되어있다.
@@ -19,4 +24,23 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 	
 	//select * from item where price < ? order by price desc
 	List<Item> findByPriceLessThanOrderByPriceDesc(Integer price);
+	
+	/*
+	//퀴즈1
+	List<Item> findByItemNmAndItemSellStatus(String itemNm, ItemSellStatus itemSellStatus);
+	List<Item> findByPriceBetween(Integer price1, Integer price2);
+	List<Item> findByRegTimeAfter(LocalDateTime regTime);
+	List<Item> findByItemSellStatusNull();
+	List<Item> findByItemDetailLike(String itemDetail);
+	*/
+	
+	//@Query("select i from Item i where i.itemDetail like %:itemDetail% order by i.price desc")
+	//List<Item> findByItemDetail(@Param("itemDetail") String itemDetail);
+	
+	@Query("select i from Item i where i.itemDetail like %?1% order by i.price desc")
+	List<Item> findByItemDetail(String itemDetail);
+	
+	@Query(value = "select * from item i where i.item_detail like %:itemDetail% order by i.price desc", nativeQuery = true)
+	List<Item> findByItemDetailByNative(@Param("itemDetail") String itemDetail);
+	
 }
