@@ -274,4 +274,93 @@ class ItemRepositoryTest {
 			System.out.println(item.toString());
 		}
 	}
+	
+	/*
+	@Test
+	@DisplayName("퀴즈3-1")
+	public void queryDslQuiz3_1Test() {
+		this.createItemTest();
+		JPAQueryFactory qf = new JPAQueryFactory(em); //쿼리를 동적으로 생성하기 위한 객체
+		QItem qItem = QItem.item;
+		
+		JPAQuery<Item> query = qf.selectFrom(qItem)
+				                 .where(qItem.itemSellStatus.eq(ItemSellStatus.SELL))
+				                 .where(qItem.itemNm.eq("테스트 상품1"));
+		
+		List<Item> itemList = query.fetch();
+		
+		for (Item item : itemList) {
+			System.out.println(item.toString());
+		}
+	}
+	
+	@Test
+	@DisplayName("퀴즈3-2")
+	public void queryDslQuiz3_2Test() {
+		this.createItemTest();
+		JPAQueryFactory qf = new JPAQueryFactory(em); //쿼리를 동적으로 생성하기 위한 객체
+		QItem qItem = QItem.item;
+		
+		JPAQuery<Item> query = qf.selectFrom(qItem)
+				                 .where(qItem.price.between(10004, 10008));
+		
+		List<Item> itemList = query.fetch();
+		
+		for (Item item : itemList) {
+			System.out.println(item.toString());
+		}
+	}
+	
+	@Test
+	@DisplayName("퀴즈3-3")
+	public void queryDslQuiz3_3Test() {
+		this.createItemTest();
+		JPAQueryFactory qf = new JPAQueryFactory(em); //쿼리를 동적으로 생성하기 위한 객체
+		QItem qItem = QItem.item;
+		LocalDateTime regTime = LocalDateTime.of(2023, 1, 1, 12, 12, 44);
+		JPAQuery<Item> query = qf.selectFrom(qItem)
+				                 .where(qItem.regTime.after(regTime));
+		
+		List<Item> itemList = query.fetch();
+		
+		for (Item item : itemList) {
+			System.out.println(item.toString());
+		}
+	}
+	
+	@Test
+	@DisplayName("퀴즈3-4")
+	public void queryDslQuiz3_4Test() {
+		this.createItemTest();
+		JPAQueryFactory qf = new JPAQueryFactory(em); //쿼리를 동적으로 생성하기 위한 객체
+		QItem qItem = QItem.item;
+
+		JPAQuery<Item> query = qf.selectFrom(qItem)
+				                 .where(qItem.itemSellStatus.isNotNull());
+		
+		List<Item> itemList = query.fetch();
+		
+		for (Item item : itemList) {
+			System.out.println(item.toString());
+		}
+	}
+	
+	@Test
+	@DisplayName("퀴즈3-5")
+	public void queryDslQuiz3_5Test() {
+		this.createItemTest();
+		JPAQueryFactory qf = new JPAQueryFactory(em); //쿼리를 동적으로 생성하기 위한 객체
+		QItem qItem = QItem.item;
+
+		JPAQuery<Item> query = qf.selectFrom(qItem)
+				                 .where(qItem.itemDetail.like("%설명1"));
+		
+		List<Item> itemList = query.fetch();
+		
+		for (Item item : itemList) {
+			System.out.println(item.toString());
+		}
+	}
+	*/
+	
 }
