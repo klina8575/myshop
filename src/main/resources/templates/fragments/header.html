@@ -5,7 +5,9 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<div th:text="${param1}"></div>
-	<div th:text="${param2}"></div>
+    <!-- th:fragment 다른 페이지에 포함시킬 영역을 만들어 준다. -->
+	<div th:fragment="header">
+		header 영역 입니다.
+	</div>
 </body>
 </html>
