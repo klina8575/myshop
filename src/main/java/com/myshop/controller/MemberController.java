@@ -1,8 +1,11 @@
 package com.myshop.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +32,9 @@ public class MemberController {
 	
 	//회원가입 버튼을 눌렀을때 실행되는 메소드
 	@PostMapping(value = "/new")
-	public String memberForm(MemberFormDto memberFormDto) {
+	public String memberForm(@Valid MemberFormDto memberFormDto, BindingResult bindingResult, Model model) {
+		//@Valid : 유효성을 검증하려는 객체 앞에 붙인다.
+		//bindingResult: 유효성 검증후에 결과를 넣어준다.
 		Member member = Member.createMember(memberFormDto, passwordEncoder);
 		memberService.saveMember(member);
 		
