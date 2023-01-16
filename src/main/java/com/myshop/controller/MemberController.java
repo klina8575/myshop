@@ -49,7 +49,6 @@ public class MemberController {
 			return "member/memberForm";
 		}
 		
-		
 		return "redirect:/";
 	}
 
