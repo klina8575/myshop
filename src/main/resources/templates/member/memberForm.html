@@ -5,24 +5,46 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
+<!-- 각 페이지의 스크립트가 작성될 위치 -->
+<th:block layout:fragment="script"></th:block>
+
+<!-- 각 페이지의 CSS가 작성될 위치 -->
+<th:block layout:fragment="css">
+	<style>
+		.fieldError {
+			color: #bd2130;
+		}
+	</style>
+</th:block>
+
 </head>
 <body>
 	<div layout:fragment="content">
-		<form class="row g-3">
-			<div class="col-auto">
-				<label for="staticEmail2" class="visually-hidden">Email</label> <input
-					type="text" readonly class="form-control-plaintext"
-					id="staticEmail2" value="email@example.com">
+		<form class="row g-3" action="/members/new" method="post" th:object="${memberFormDto}">
+			<div>
+				<label th:for="name">이름</label> 
+				<input type="text" th:field="*{name}" class="form-control" placeholder="이름을 입력해주세요">
+				<p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="fieldError">Incorrect Data</p>
 			</div>
-			<div class="col-auto">
-				<label for="inputPassword2" class="visually-hidden">Password</label>
-				<input type="password" class="form-control" id="inputPassword2"
-					placeholder="Password">
+			<div>
+				<label th:for="email">이메일</label> 
+				<input type="email" th:field="*{email}" class="form-control" placeholder="이메일을 입력해주세요">
+				<p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="fieldError">Incorrect Data</p>
 			</div>
-			<div class="col-auto">
-				<button type="submit" class="btn btn-primary mb-3">Confirm
-					identity</button>
-			    </div>
+			<div>
+				<label th:for="password">비밀번호</label> 
+				<input type="password" th:field="*{password}" class="form-control" placeholder="비밀번호를 입력">
+				<p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="fieldError">Incorrect Data</p>
+			</div>
+			<div>
+				<label th:for="address">주소</label> 
+				<input type="text" th:field="*{address}" class="form-control" placeholder="주소를 입력해주세요">
+				<p th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="fieldError">Incorrect Data</p>
+			</div>
+			<div>
+				<button type="submit" class="btn btn-primary mb-3">회원가입</button>
+			</div>
 		</form>
 	</div>
 </body>
