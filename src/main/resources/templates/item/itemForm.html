@@ -68,9 +68,30 @@
 			
 			<div class="input-group mb-3">
   				<span class="input-group-text">상품명</span>
-  				<input type="text" class="form-control" th:field="*{itemNm}" placeholder="상품명을 입력">
+  				<input type="text" class="form-control" th:field="*{itemNm}" placeholder="상품명 입력">
 			</div>
 			<p th:if="${#fields.hasErrors('itemNm')}" th:errors="*{itemNm}" class="fieldError">Incorrect Data</p>
+			
+			<div class="input-group mb-3">
+  				<span class="input-group-text">가격</span>
+  				<input type="text" class="form-control" th:field="*{price}" placeholder="가격 입력">
+			</div>
+			<p th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="fieldError">Incorrect Data</p>
+			
+			<div class="input-group mb-3">
+  				<span class="input-group-text">재고</span>
+  				<input type="text" class="form-control" th:field="*{stockNumber}" placeholder="재고 입력">
+			</div>
+			<p th:if="${#fields.hasErrors('stockNumber')}" th:errors="*{stockNumber}" class="fieldError">Incorrect Data</p>
+			
+			<div class="input-group mb-3">
+  				<span class="input-group-text">상품 상세내용</span>
+  				<div class="form-floating">
+  					<textarea class="form-control" placeholder="상품 상세내용" th:field="*{itemDetail}" id="floatingTextarea"></textarea>
+  					<label for="floatingTextarea">상품 상세내용</label>
+				</div>
+			</div>
+			<p th:if="${#fields.hasErrors('itemDetail')}" th:errors="*{itemDetail}" class="fieldError">Incorrect Data</p>
 			
 			<div>
 				<button type="submit" class="btn btn-primary mb-3">회원가입</button>
