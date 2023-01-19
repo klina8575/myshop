@@ -93,6 +93,17 @@
 			</div>
 			<p th:if="${#fields.hasErrors('itemDetail')}" th:errors="*{itemDetail}" class="fieldError">Incorrect Data</p>
 			
+			<div th:if="${#lists.isEmpty(itemFormDto.itemImgDtoList)}">
+				<div th:each="num: ${#numbers.sequence(1,5)}">
+					<div class="mb-3">
+  						<label for="formFile" class="form-label custom-file-label" th:text="상품이미지 + ${num}"></label>
+  						<input class="form-control custom-file-input" type="file" id="itemImgFile" name="itemImgFile">
+					</div>
+				</div>
+			</div>
+			
+
+			
 			<div>
 				<button type="submit" class="btn btn-primary mb-3">회원가입</button>
 			</div>
