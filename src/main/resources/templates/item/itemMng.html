@@ -41,9 +41,9 @@ select {
 </head>
 <body>
 	<div layout:fragment="content">
-<!-- 		<form th:action="@{'/admin/items/' + ${items.number}}" role="form"
-			method="get" th:object="${items}"> -->
-<!-- 			<table class="table">
+		<form th:action="@{'/admin/items/' + ${items.number}}" role="form"
+			method="get" th:object="${items}">
+			<table class="table">
 				<thead>
 					<tr>
 						<th scope="col">상품아이디</th>
@@ -64,29 +64,7 @@ select {
 						<td th:text="${item.regTime}"></td>
 					</tr>
 				</tbody>
-			</table> -->
-			
- 		<form>
-			<table class="table">
-				<thead>
-					<tr>
-						<th scope="col">상품아이디</th>
-						<th scope="col">상품명</th>
-						<th scope="col">상태</th>
-						<th scope="col">등록자</th>
-						<th scope="col">등록일</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<th>1</th>
-						<td><a>티셔츠</a></td>
-						<td>1</td>
-						<td>1</td>
-						<td>1</td>
-					</tr>
-				</tbody>
-			</table> 
+			</table>
 
 			<!-- 페이징 버튼 -->
 			<nav aria-label="Page navigation example">
@@ -100,9 +78,9 @@ select {
 			</nav>
 
 			<!-- 검색창 -->
-			<div class="d-flex justify-content-center" style="height:40px;">
-			    <!-- 상품 등록일 -->
-				<select class="form-select" style="width:auto;">
+			<div class="d-flex justify-content-center" style="height: 40px;">
+				<!-- 상품 등록일 -->
+				<select class="form-select" style="width: auto;">
 					<option value="all">전체기간</option>
 					<option value="1d">1일</option>
 					<option value="1w">1주</option>
@@ -110,19 +88,21 @@ select {
 					<option value="6m">6개월</option>
 				</select>
 				<!-- 상품판매 상태 -->
-				<select class="form-select" style="width:auto;">
+				<select class="form-select" style="width: auto;">
 					<option value="">판매상태(전체)</option>
 					<option value="SELL">판매</option>
 					<option value="SOLD_OUT">품절</option>
 				</select>
 				<!-- 상품명, 등록자 선택 -->
-				<select class="form-select" style="width:auto;">
+				<select class="form-select" style="width: auto;">
 					<option value="itemNm">상품명</option>
 					<option value="createdBy">등록자</option>
 				</select>
 				<!-- 검색창 -->
-				<input type="text" class="form-control" placeholder="검색어 입력" style="width:auto;">
-				<button id="searchBtn" type="submit" class="btn btn-primary mb-3" style="height:100%;">검색</button>
+				<input type="text" class="form-control" placeholder="검색어 입력"
+					style="width: auto;">
+				<button id="searchBtn" type="submit" class="btn btn-primary mb-3"
+					style="height: 100%;">검색</button>
 			</div>
 		</form>
 	</div>
