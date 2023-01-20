@@ -1,13 +1,16 @@
 package com.myshop.repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.thymeleaf.util.StringUtils;
 
+import com.myshop.constant.ItemSellStatus;
 import com.myshop.dto.ItemSearchDto;
 import com.myshop.entity.Item;
 import com.myshop.entity.QItem;
@@ -33,19 +36,39 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
 		else if(StringUtils.equals("1m", searchDateType)) dateTime = dateTime.minusMonths(1);
 		else if(StringUtils.equals("6m", searchDateType)) dateTime = dateTime.minusMonths(6);
 		
-		return QItem.item.
+		return QItem.item.regTime.after(dateTime); //이후의 시간
 	}
 	
-	@Override
-	public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
-		QueryResults<Item> results = queryFactory
-				.selectFrom(QItem.item) //select * from item
-				.where(itemSearchDto.getSearchDateType(), // where reg_time = 1d
-						itemSearchDto.getSearchSellStatus(),
-						itemSearchDto.getSearchBy())
-		
+	private BooleanExpression searchSellStatusEq(ItemSellStatus searchSellStatus) {
+		return searchSellStatus == null ? null : QItem.item.itemSellStatus.eq(searchSellStatus);
+	}
+	
+	
+	private BooleanExpression searchByLike(String searchBy, String searchQuery) {
+		if(StringUtils.equals("itemNm", searchBy)) {
+			return QItem.item.itemNm.like("%" + searchQuery + "%"); //itemNm LIKE %청바지%
+		} else if(StringUtils.equals("createdBy", searchBy)) {
+			return QItem.item.createBy.like("%" + searchQuery + "%"); //createBy LIKE %test.com%
+		}
 		
 		return null;
 	}
 	
+	
+	@Override
+	public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
+		List<Item> content = queryFactory
+				.selectFrom(QItem.item) //select * from item
+				.where(regDtsAfter(itemSearchDto.getSearchDateType()), // where reg_time = ?
+					   searchSellStatusEq(itemSearchDto.getSearchSellStatus()), //and sell_status = ?
+					   searchByLike(itemSearchDto.getSearchBy(), itemSearchDto.getSearchQuery())) // and itemNm LIKE %검색어%
+				.orderBy(QItem.item.id.desc())
+				.offset(pageable.getOffset()) //데이터를 가져올 시작 index
+				.limit(pageable.getPageSize()) //한번에 가지고 올 최대 개수
+				.fetch();
+		
+		long total = content.size(); //전체 레코드 갯수
+		
+		return new PageImpl<>(content, pageable, total);
+	}
 }
