@@ -16,6 +16,7 @@ import com.myshop.entity.Item;
 import com.myshop.entity.QItem;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
@@ -48,7 +49,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
 		if(StringUtils.equals("itemNm", searchBy)) {
 			return QItem.item.itemNm.like("%" + searchQuery + "%"); //itemNm LIKE %청바지%
 		} else if(StringUtils.equals("createdBy", searchBy)) {
-			return QItem.item.createBy.like("%" + searchQuery + "%"); //createBy LIKE %test.com%
+			return QItem.item.createdBy.like("%" + searchQuery + "%"); //createdBy LIKE %test.com%
 		}
 		
 		return null;
@@ -67,7 +68,14 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
 				.limit(pageable.getPageSize()) //한번에 가지고 올 최대 개수
 				.fetch();
 		
-		long total = content.size(); //전체 레코드 갯수
+		//long total = content.size(); //전체 레코드 갯수
+		
+		long total = queryFactory.select(Wildcard.count).from(QItem.item)
+                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
+                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
+                        searchByLike(itemSearchDto.getSearchBy(), itemSearchDto.getSearchQuery()))
+                .fetchOne();
+		
 		
 		return new PageImpl<>(content, pageable, total);
 	}
