@@ -70,6 +70,8 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
 		
 		//long total = content.size(); //전체 레코드 갯수
 		
+		//https://querydsl.com/static/querydsl/4.1.0/apidocs/com/querydsl/core/types/dsl/Wildcard.html
+		// Wildcard.count = count(*)
 		long total = queryFactory.select(Wildcard.count).from(QItem.item)
                 .where(regDtsAfter(itemSearchDto.getSearchDateType()),
                         searchSellStatusEq(itemSearchDto.getSearchSellStatus()),

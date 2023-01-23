@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.myshop.dto.ItemFormDto;
@@ -26,6 +27,7 @@ import com.myshop.service.ItemService;
 import lombok.RequiredArgsConstructor;
 
 @Controller
+//@RestController
 @RequiredArgsConstructor
 public class ItemController {
 	
@@ -117,5 +119,7 @@ public class ItemController {
 		model.addAttribute("maxPage", 5); //상품 관리 메뉴 하단에 보여줄 최대 페이지 번호
 		
 		return "item/itemMng";
+//		return items;
 	}
+	
 }
