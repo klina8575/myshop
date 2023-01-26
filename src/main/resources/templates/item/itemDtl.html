@@ -4,6 +4,9 @@
 	layout:decorate="~{layouts/layout1}">
 <head>
 <meta charset="UTF-8">
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
 <title>Insert title here</title>
 
 <!-- 각 페이지의 스크립트가 작성될 위치 -->
@@ -23,6 +26,21 @@
 			var totalPrice = price * count;
 			$("#totalPrice").html(totalPrice + '원');
 		}
+		
+		function order() {
+			var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+            
+            var url = "/order";
+            
+            var paramData = {
+                itemId : $("#itemId").val(),
+                count : $("#count").val()
+            };
+            
+		}
+		
+		
 	</script>
 </th:block>
 
