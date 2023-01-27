@@ -76,4 +76,13 @@ public class OrderService {
 		return new PageImpl<OrderHistDto>(orderHistDtos, pageable, totalCount);
 	}
 	
+	//현재 로그인한 사용자와 주문데이터를 생성한 사용자가 같은지 검사
+	public boolean validateOrder() {
+		
+	}
+	
+	//주문 취소
+	public void cancelOrder() {
+		
+	}
 }
