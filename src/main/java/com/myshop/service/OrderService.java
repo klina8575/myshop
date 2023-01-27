@@ -98,4 +98,11 @@ public class OrderService {
 				                      .orElseThrow(EntityNotFoundException::new);
 		order.cancelOrder();
 	}
+	
+	//주문 삭제
+	public void deleteOrder(Long orderId) {
+		Order order = orderRepositorty.findById(orderId)
+				                      .orElseThrow(EntityNotFoundException::new);
+		orderRepositorty.delete(order);
+	}
 }
